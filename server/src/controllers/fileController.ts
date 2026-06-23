@@ -2,7 +2,11 @@ import { Response } from "express";
 
 import File from "../models/File";
 import { AuthRequest } from "../types/auth.types";
-import { uploadFileToS3, deleteFileFromS3 } from "../services/s3.service";
+import {
+  uploadFileToS3,
+  deleteFileFromS3,
+  generateDownloadUrl,
+} from "../services/s3.service";
 
 export const uploadFile = async (req: AuthRequest, res: Response) => {
   try {
@@ -109,6 +113,41 @@ export const deleteFile = async (req: AuthRequest, res: Response) => {
     return res.status(200).json({
       success: true,
       message: "File deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error instanceof Error ? error.message : "Internal Server Error",
+    });
+  }
+};
+
+export const downloadFile = async (req: AuthRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
+
+    const file = await File.findOne({
+      _id: req.params.id,
+      owner: req.user._id,
+    });
+
+    if (!file) {
+      return res.status(404).json({
+        success: false,
+        message: "File not found",
+      });
+    }
+
+    const downloadUrl = await generateDownloadUrl(file.s3Key);
+
+    return res.status(200).json({
+      success: true,
+      downloadUrl,
     });
   } catch (error) {
     return res.status(500).json({
