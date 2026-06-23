@@ -1,11 +1,11 @@
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3 } from "../config/s3";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 
 export const uploadFileToS3 = async (
   file: Express.Multer.File,
-  userId: string
+  userId: string,
 ): Promise<string> => {
-
   const sanitizedFileName = file.originalname
     .toLowerCase()
     .replace(/[^a-z0-9.]/g, "-");
@@ -18,8 +18,17 @@ export const uploadFileToS3 = async (
       Key: s3Key,
       Body: file.buffer,
       ContentType: file.mimetype,
-    })
+    }),
   );
 
   return s3Key;
+};
+
+export const deleteFileFromS3 = async (s3Key: string): Promise<void> => {
+  await s3.send(
+    new DeleteObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: s3Key,
+    }),
+  );
 };
