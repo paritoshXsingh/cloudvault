@@ -1,11 +1,25 @@
-import { ListBucketsCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3 } from "../config/s3";
 
-export const testS3Connection = async () => {
-  const response = await s3.send(new ListBucketsCommand({}));
+export const uploadFileToS3 = async (
+  file: Express.Multer.File,
+  userId: string
+): Promise<string> => {
 
-  console.log(
-    "Buckets:",
-    response.Buckets?.map((bucket) => bucket.Name),
+  const sanitizedFileName = file.originalname
+    .toLowerCase()
+    .replace(/[^a-z0-9.]/g, "-");
+
+  const s3Key = `${userId}/${Date.now()}-${sanitizedFileName}`;
+
+  await s3.send(
+    new PutObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: s3Key,
+      Body: file.buffer,
+      ContentType: file.mimetype,
+    })
   );
+
+  return s3Key;
 };
