@@ -3,6 +3,7 @@ import { Bell, Search, Upload } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import UploadDialog from "@/components/upload/UploadDialog";
 
 const TopNavbar = () => {
   return (
@@ -24,10 +25,12 @@ const TopNavbar = () => {
         </div>
 
         {/* Upload */}
-        <Button>
-          <Upload className="mr-2 h-4 w-4" />
-          Upload
-        </Button>
+        <UploadDialog>
+          <Button>
+            <Upload className="mr-2 h-4 w-4" />
+            Upload
+          </Button>
+        </UploadDialog>
 
         {/* Notifications */}
         <Button variant="ghost" size="icon">

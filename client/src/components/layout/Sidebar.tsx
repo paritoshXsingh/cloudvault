@@ -9,6 +9,10 @@ import {
 import { NavLink } from "react-router-dom";
 
 import Logo from "@/components/common/Logo";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+
+import { useAuthStore } from "@/store/authStore";
 
 const menuItems = [
   {
@@ -39,8 +43,19 @@ const menuItems = [
 ];
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const logout = useAuthStore((state) => state.logout);
+
+  const handleLogout = () => {
+    logout();
+
+    toast.success("Logged out successfully");
+
+    navigate("/login");
+  };
   return (
-    <aside className="hidden h-screen w-72 flex-col border-r border-slate-200 bg-white lg:flex">
+    <aside className="sticky top-0 hidden h-screen w-72 shrink-0 flex-col border-r border-slate-200 bg-white lg:flex">
       {/* Logo */}
       <div className="border-b border-slate-200 p-6">
         <Logo />
@@ -70,23 +85,12 @@ const Sidebar = () => {
         })}
       </nav>
 
-      {/* Storage Card */}
-      <div className="border-t border-slate-200 p-4">
-        <div className="rounded-2xl bg-slate-100 p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-slate-900">Storage</h3>
-
-            <span className="text-xs text-slate-500">25%</span>
-          </div>
-
-          <div className="h-2 overflow-hidden rounded-full bg-slate-300">
-            <div className="h-full w-1/4 rounded-full bg-indigo-600"></div>
-          </div>
-
-          <p className="mt-3 text-xs text-slate-500">2.5 GB of 10 GB used</p>
-        </div>
-
-        <button className="mt-4 flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-red-500 transition hover:bg-red-50">
+      {/* Logout */}
+      <div className="mt-auto border-t border-slate-200 p-4">
+        <button
+          onClick={handleLogout}
+          className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-red-500 transition hover:bg-red-50"
+        >
           <LogOut className="h-5 w-5" />
           Logout
         </button>

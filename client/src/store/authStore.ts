@@ -1,30 +1,30 @@
 import { create } from "zustand";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
+import { login as loginService, type User } from "@/services/auth.service";
 
-interface AuthStore {
+interface AuthState {
   token: string | null;
   user: User | null;
 
-  setAuth: (token: string, user: User) => void;
-
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthStore>((set) => ({
+export const useAuthStore = create<AuthState>((set) => ({
   token: localStorage.getItem("token"),
   user: null,
 
-  setAuth: (token, user) => {
-    localStorage.setItem("token", token);
+  login: async (email, password) => {
+    const response = await loginService({
+      email,
+      password,
+    });
+
+    localStorage.setItem("token", response.token);
 
     set({
-      token,
-      user,
+      token: response.token,
+      user: response.user,
     });
   },
 
