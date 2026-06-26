@@ -19,7 +19,7 @@ router.post("/upload", protect, upload.single("file"), uploadFile);
 router.get("/shared/:token", getSharedFile);
 router.delete("/:id", protect, deleteFile);
 router.get("/:id/download", protect, downloadFile);
-router.post("/:id/share", protect, shareFile);
-router.patch("/:id/share", protect, unshareFile);
+router.patch("/:id/share", protect, shareFile);
+router.patch("/:id/unshare", protect, unshareFile);
 
 export default router;

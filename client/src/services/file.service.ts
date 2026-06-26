@@ -49,3 +49,9 @@ export const unshareFile = async (id: string) => {
   const response = await api.patch(`/files/${id}/unshare`);
   return response.data;
 };
+
+export const downloadFile = async (id: string) => {
+  const response = await api.get(`/files/${id}/download`);
+
+  return response.data;
+};

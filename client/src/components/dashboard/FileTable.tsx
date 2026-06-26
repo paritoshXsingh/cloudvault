@@ -12,6 +12,8 @@ import {
 import type { FileData } from "@/services/file.service";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { useDelete } from "@/hooks/useDelete";
+import { useDownload } from "@/hooks/useDownload";
+import { useShare } from "@/hooks/useShare";
 
 interface Props {
   files: FileData[];
@@ -37,6 +39,8 @@ const formatSize = (bytes: number) => {
 
 const FileTable = ({ files }: Props) => {
   const deleteMutation = useDelete();
+  const handleDownload = useDownload();
+  const { share, unshare } = useShare();
   return (
     <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
       <table className="w-full">
@@ -91,11 +95,23 @@ const FileTable = ({ files }: Props) => {
                       <Star className="h-4 w-4" />
                     </button>
 
-                    <button className="rounded-lg p-2 transition hover:bg-slate-100">
+                    <button
+                      onClick={() =>
+                        file.isShared ? unshare(file._id) : share(file._id)
+                      }
+                      className={`rounded-lg p-2 transition ${
+                        file.isShared
+                          ? "text-green-600 hover:bg-green-50"
+                          : "hover:bg-slate-100"
+                      }`}
+                    >
                       <Share2 className="h-4 w-4" />
                     </button>
 
-                    <button className="rounded-lg p-2 transition hover:bg-slate-100">
+                    <button
+                      onClick={() => handleDownload(file._id)}
+                      className="rounded-lg p-2 transition hover:bg-slate-100"
+                    >
                       <Download className="h-4 w-4" />
                     </button>
 
