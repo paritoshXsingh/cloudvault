@@ -91,6 +91,8 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
+//logout using zustand simply clear token and take to /login 
+
 export const getMe = async (req: AuthRequest, res: Response) => {
   res.status(200).json({
     success: true,
