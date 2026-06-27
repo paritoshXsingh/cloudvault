@@ -19,7 +19,10 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>((set) => ({
   token: localStorage.getItem("token"),
-  user: null,
+
+  user: localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user")!)
+    : null,
 
   login: async (email, password) => {
     const response = await loginService({
@@ -28,6 +31,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     });
 
     localStorage.setItem("token", response.token);
+    localStorage.setItem("user", JSON.stringify(response.user));
 
     set({
       token: response.token,
@@ -43,6 +47,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     });
 
     localStorage.setItem("token", response.token);
+    localStorage.setItem("user", JSON.stringify(response.user));
 
     set({
       token: response.token,
@@ -52,6 +57,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout: () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
 
     set({
       token: null,

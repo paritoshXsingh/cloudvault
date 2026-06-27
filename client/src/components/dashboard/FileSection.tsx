@@ -1,32 +1,18 @@
 import EmptyState from "./EmptyState";
 import FileTable from "./FileTable";
 
-import { useFiles } from "@/hooks/useFiles";
+import type { FileData } from "@/services/file.service";
 
-const FileSection = () => {
-  const { data, isLoading, isError } = useFiles();
+interface Props {
+  files: FileData[];
+}
 
-  if (isLoading) {
-    return (
-      <div className="rounded-3xl bg-white p-10 text-center">
-        Loading files...
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="rounded-3xl bg-red-50 p-10 text-center text-red-600">
-        Failed to load files.
-      </div>
-    );
-  }
-
-  if (!data || data.files.length === 0) {
+const FileSection = ({ files }: Props) => {
+  if (files.length === 0) {
     return <EmptyState />;
   }
 
-  return <FileTable files={data.files} />;
+  return <FileTable files={files} />;
 };
 
 export default FileSection;

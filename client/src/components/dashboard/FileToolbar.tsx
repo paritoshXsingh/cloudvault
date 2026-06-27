@@ -11,7 +11,37 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const FileToolbar = () => {
+interface Props {
+  searchTerm: string;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+
+  fileType: string;
+  setFileType: React.Dispatch<React.SetStateAction<string>>;
+
+  sharing: string;
+  setSharing: React.Dispatch<React.SetStateAction<string>>;
+
+  sortBy: string;
+  setSortBy: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const FileToolbar = ({
+  searchTerm,
+  setSearchTerm,
+  fileType,
+  setFileType,
+  sharing,
+  setSharing,
+  sortBy,
+  setSortBy,
+}: Props) => {
+  const handleReset = () => {
+    setSearchTerm("");
+    setFileType("all");
+    setSharing("all");
+    setSortBy("newest");
+  };
+
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -19,27 +49,32 @@ const FileToolbar = () => {
         <div className="relative w-full lg:max-w-md">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
 
-          <Input placeholder="Search your files..." className="pl-10" />
+          <Input
+            placeholder="Search your files..."
+            className="pl-10"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
 
         {/* Filters */}
         <div className="flex flex-wrap gap-3">
-          <Select>
+          <Select value={fileType} onValueChange={setFileType}>
             <SelectTrigger className="w-[150px]">
-              <SelectValue placeholder="File Type" />
+              <SelectValue />
             </SelectTrigger>
 
             <SelectContent>
               <SelectItem value="all">All Files</SelectItem>
               <SelectItem value="pdf">PDF</SelectItem>
               <SelectItem value="image">Images</SelectItem>
-              <SelectItem value="doc">Documents</SelectItem>
+              <SelectItem value="document">Documents</SelectItem>
             </SelectContent>
           </Select>
 
-          <Select>
+          <Select value={sharing} onValueChange={setSharing}>
             <SelectTrigger className="w-[150px]">
-              <SelectValue placeholder="Sharing" />
+              <SelectValue />
             </SelectTrigger>
 
             <SelectContent>
@@ -49,9 +84,9 @@ const FileToolbar = () => {
             </SelectContent>
           </Select>
 
-          <Select>
+          <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger className="w-[170px]">
-              <SelectValue placeholder="Sort By" />
+              <SelectValue />
             </SelectTrigger>
 
             <SelectContent>
@@ -63,7 +98,9 @@ const FileToolbar = () => {
             </SelectContent>
           </Select>
 
-          <Button variant="outline">Reset</Button>
+          <Button variant="outline" onClick={handleReset}>
+            Reset
+          </Button>
         </div>
       </div>
     </section>

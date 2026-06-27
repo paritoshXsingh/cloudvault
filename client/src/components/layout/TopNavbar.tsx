@@ -1,30 +1,34 @@
-import { Bell, Search, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+
 import UploadDialog from "@/components/upload/UploadDialog";
+import { useAuthStore } from "@/store/authStore";
 
 const TopNavbar = () => {
+  const user = useAuthStore((state) => state.user);
+
+  const initials =
+    user?.name
+      ?.split(" ")
+      .map((word) => word[0])
+      .join("")
+      .toUpperCase() || "U";
+
   return (
     <header className="sticky top-0 z-20 flex h-20 items-center justify-between border-b border-slate-200 bg-white px-8">
       {/* Left */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-slate-900">
+          Welcome, {user?.name || "User"} 👋
+        </h1>
 
         <p className="text-sm text-slate-500">Securely manage your files.</p>
       </div>
 
       {/* Right */}
       <div className="flex items-center gap-4">
-        {/* Search */}
-        <div className="relative hidden md:block">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-
-          <Input placeholder="Search files..." className="w-72 pl-10" />
-        </div>
-
-        {/* Upload */}
         <UploadDialog>
           <Button>
             <Upload className="mr-2 h-4 w-4" />
@@ -32,14 +36,8 @@ const TopNavbar = () => {
           </Button>
         </UploadDialog>
 
-        {/* Notifications */}
-        <Button variant="ghost" size="icon">
-          <Bell className="h-5 w-5" />
-        </Button>
-
-        {/* Avatar */}
-        <Avatar>
-          <AvatarFallback>PS</AvatarFallback>
+        <Avatar className="cursor-pointer">
+          <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
       </div>
     </header>
