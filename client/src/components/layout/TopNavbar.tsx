@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import UploadDialog from "@/components/upload/UploadDialog";
 import { useAuthStore } from "@/store/authStore";
 
+import MobileSidebar from "./MobileSidebar";
+
 const TopNavbar = () => {
   const user = useAuthStore((state) => state.user);
 
@@ -19,12 +21,18 @@ const TopNavbar = () => {
   return (
     <header className="sticky top-0 z-20 flex h-20 items-center justify-between border-b border-slate-200 bg-white px-8">
       {/* Left */}
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">
-          Welcome, {user?.name || "User"} 👋
-        </h1>
+      <div className="flex items-center gap-3">
+        <MobileSidebar />
 
-        <p className="text-sm text-slate-500">Securely manage your files.</p>
+        <div>
+          <h1 className="text-xl font-bold text-slate-900 md:text-2xl">
+            Welcome, {user?.name || "User"} 👋
+          </h1>
+
+          <p className="hidden text-sm text-slate-500 md:block">
+            Securely manage your files.
+          </p>
+        </div>
       </div>
 
       {/* Right */}

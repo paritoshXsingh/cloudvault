@@ -1,4 +1,4 @@
-import { LayoutDashboard, FolderOpen, Share2, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -6,23 +6,7 @@ import Logo from "@/components/common/Logo";
 import { useAuthStore } from "@/store/authStore";
 import { useFiles } from "@/hooks/useFiles";
 
-const menuItems = [
-  {
-    name: "Dashboard",
-    icon: LayoutDashboard,
-    path: "/",
-  },
-  {
-    name: "My Files",
-    icon: FolderOpen,
-    path: "/files",
-  },
-  {
-    name: "Shared",
-    icon: Share2,
-    path: "/shared",
-  },
-];
+import { menuItems } from "@/constants/navigation";
 
 const Sidebar = () => {
   const navigate = useNavigate();
