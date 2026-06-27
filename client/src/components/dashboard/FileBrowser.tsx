@@ -4,6 +4,7 @@ import FileToolbar from "./FileToolbar";
 import FileSection from "./FileSection";
 
 import { useFiles } from "@/hooks/useFiles";
+import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 
 interface Props {
   sharedOnly?: boolean;
@@ -84,11 +85,7 @@ const FileBrowser = ({ sharedOnly = false }: Props) => {
   }, [files, searchTerm, fileType, sharing, sortBy, sharedOnly]);
 
   if (isLoading) {
-    return (
-      <div className="rounded-3xl bg-white p-10 text-center">
-        Loading files...
-      </div>
-    );
+    return <LoadingSkeleton />;
   }
 
   if (isError) {

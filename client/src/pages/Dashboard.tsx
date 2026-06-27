@@ -3,6 +3,7 @@ import StatsCards from "@/components/dashboard/StatsCards";
 import FileBrowser from "@/components/dashboard/FileBrowser";
 
 import { useFiles } from "@/hooks/useFiles";
+import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 
 const Dashboard = () => {
   const { data, isLoading, isError } = useFiles();
@@ -10,11 +11,7 @@ const Dashboard = () => {
   const files = data?.files ?? [];
 
   if (isLoading) {
-    return (
-      <div className="rounded-3xl bg-white p-10 text-center">
-        Loading files...
-      </div>
-    );
+    return <LoadingSkeleton />;
   }
 
   if (isError) {
