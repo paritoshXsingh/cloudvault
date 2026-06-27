@@ -6,7 +6,13 @@ import fileRoutes from "./routes/fileRoutes";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: false,
+  }),
+);
+
 app.use(express.json());
 
 app.get("/", (_req, res) => {
